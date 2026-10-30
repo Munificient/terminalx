@@ -78,7 +78,10 @@ export default function MainChart() {
     seriesRef.current = series
     lastCandle.current = history[history.length - 1]
 
+    // chart.remove() drops the canvas, the resize observer and every listener.
+    // without it each remount (StrictMode, HMR) leaves a whole chart instance behind
     return () => {
+      chart.remove()
       seriesRef.current = null
       lastCandle.current = null
     }
