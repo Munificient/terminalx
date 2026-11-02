@@ -1,8 +1,15 @@
+import { useEffect } from 'react'
+import { connect, disconnect } from './utils/mockSocket'
 import Navbar from './components/layout/Navbar'
 import TickerTape from './components/terminal/TickerTape'
 import MainChart from './components/terminal/MainChart'
 
 export default function App() {
+  useEffect(() => {
+    connect()
+    return () => disconnect()
+  }, [])
+
   return (
     <div className="min-h-screen bg-slate-900 text-slate-100">
       <Navbar />
