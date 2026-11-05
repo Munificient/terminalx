@@ -135,7 +135,7 @@ const useMarketStore = create((set, get) => ({
       return { ok: true }
     }
 
-    if (!existing || existing.amount < qty) {
+    if (!existing || existing.amount < qty - 1e-9) {
       return { ok: false, error: `Not enough ${symbol} to sell` }
     }
 
@@ -143,7 +143,7 @@ const useMarketStore = create((set, get) => ({
       .map((h) =>
         h.symbol === symbol ? { ...h, amount: round8(h.amount - qty) } : h
       )
-      .filter((h) => h.amount > 0)
+      .filter((h) => h.amount > 1e-8)
 
     set({
       portfolio: { balance: round2(portfolio.balance + cost), holdings },
