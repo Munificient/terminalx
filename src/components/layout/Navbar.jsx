@@ -1,6 +1,9 @@
 import { Activity, User } from 'lucide-react'
+import useMarketStore from '../../store/useMarketStore'
 
 export default function Navbar() {
+  const connected = useMarketStore((s) => s.connected)
+
   return (
     <header className="flex items-center justify-between border-b border-slate-700 bg-slate-800 px-4 py-3">
       <div className="flex items-center gap-2">
@@ -11,10 +14,16 @@ export default function Navbar() {
       <div className="flex items-center gap-4">
         <div className="flex items-center gap-2 text-xs font-medium text-slate-300">
           <span className="relative flex h-2.5 w-2.5">
-            <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-up opacity-75" />
-            <span className="relative inline-flex h-2.5 w-2.5 rounded-full bg-up" />
+            {connected && (
+              <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-up opacity-75" />
+            )}
+            <span
+              className={`relative inline-flex h-2.5 w-2.5 rounded-full ${
+                connected ? 'bg-up' : 'bg-slate-500'
+              }`}
+            />
           </span>
-          Live
+          {connected ? 'Live' : 'Connecting'}
         </div>
 
         <button
