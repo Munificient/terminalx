@@ -57,6 +57,7 @@ const round8 = (n) => Math.round(n * 1e8) / 1e8
 const round2 = (n) => Math.round(n * 100) / 100
 
 const useMarketStore = create((set, get) => ({
+  connected: false,
   assets: initialAssets,
   orderBook: buildOrderBook(seedAssets[0].price),
   portfolio: {
@@ -65,6 +66,15 @@ const useMarketStore = create((set, get) => ({
       { symbol: 'BTC', amount: 0.25, avgPrice: 61800 },
       { symbol: 'ETH', amount: 2, avgPrice: 3100 },
     ],
+  },
+
+  setConnected: (connected) => set({ connected }),
+
+  setOrderBook: (orderBook) => {
+    if (!orderBook || !Array.isArray(orderBook.bids) || !Array.isArray(orderBook.asks)) {
+      return
+    }
+    set({ orderBook })
   },
 
   updateTicker: (symbol, newPrice) => {
@@ -81,12 +91,7 @@ const useMarketStore = create((set, get) => ({
           change24h: calcChange(price, a.open24h),
         }
       })
-
-      const next = { assets }
-      if (symbol === 'BTC') {
-        next.orderBook = buildOrderBook(price)
-      }
-      return next
+      return { assets }
     })
   },
 
